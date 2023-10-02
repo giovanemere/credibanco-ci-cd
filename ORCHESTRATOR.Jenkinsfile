@@ -45,8 +45,8 @@ pipeline {
                     
                                             withSonarQubeEnv("sonarqube") {
                                                 sh ("""${tool("sonarqube")}/bin/sonar-scanner \
-                                                -Dsonar.projectKey=${projectName}-${appName} \
-                                                -Dsonar.projectName=${projectName}-${appName} \
+                                                -Dsonar.projectKey=${projectName} \
+                                                -Dsonar.projectName=${projectName} \
                                                 -Dsonar.projectBaseDir=${workSpaceTrigger} \
                                                 -Dsonar.sources=. \
                                                 -Dsonar.java.binaries=. \
