@@ -154,6 +154,14 @@ pipeline {
                         app.push("${env.BUILD_NUMBER}")            
                         app.push("latest")
                     }
+                }
+            }
+        }
+        stage('Build Docker Run') {
+            agent { label "${AgentLabel}" }
+            options { skipDefaultCheckout(true) }
+            steps {          
+                script {
 
                     //login repositorio
                     withCredentials([usernamePassword(credentialsId: "credential", passwordVariable: 'dockerhubpwd', usernameVariable: 'dockerhubuser')]){ 
