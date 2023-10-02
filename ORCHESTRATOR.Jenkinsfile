@@ -110,7 +110,7 @@ pipeline {
                     
                     // Construye la imagen de Docker
                     //dockerImage = docker.build registry + ":$BUILD_NUMBER" 
-                    sh 'sudo docker build -t ${registry}:$BUILD_NUMBER .'     
+                    sh 'docker build -t ${registry}:$BUILD_NUMBER .'     
 	                echo 'Build Image Completed'
 
                    
@@ -121,7 +121,7 @@ pipeline {
 
 
                      // Inicia sesión en Docker Hub
-                     sh 'sudo docker push ${registry}:$BUILD_NUMBER'
+                     sh 'docker push ${registry}:$BUILD_NUMBER'
                      //docker.withRegistry( '', registryCredential ) {
                      //   dockerImage.push()
                      //}
