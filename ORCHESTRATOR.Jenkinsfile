@@ -144,26 +144,25 @@ pipeline {
 
                     // Construye la imagen de Docker
                     //docker.build("${registry}:$BUILD_NUMBER", "-f Dockerfile .")
-                    sh 'docker build -t ${registry}:$BUILD_NUMBER .'     
+                    sh 'sudo  docker build -t ${registry}:$BUILD_NUMBER .'     
 	                echo 'Build Image Completed'
 
-                    sh 'docker docker image ls | grep ${registry}:$BUILD_NUMBER'  
-
+                    sh 'sudo docker docker image ls | grep ${registry}:$BUILD_NUMBER'  
 
                     //  Inicia sesión en Docker Hub
                     sh 'echo $registryCredential | docker login -u $registryCredential --password-stdin'               		
 	                echo 'Login Completed'                     
 
                     // Subir Imagen 
-                    sh 'docker push ${registry}:$BUILD_NUMBER'
+                    sh 'sudo docker push ${registry}:$BUILD_NUMBER'
 
                     // Clean Image local
-                    sh "docker rmi ${registry}:$BUILD_NUMBER" 
+                    sh "sudo docker rmi ${registry}:$BUILD_NUMBER" 
 
                     // Subir Contenedor
-                    sh 'docker run --name  perceptor -d -p 8085:80 perceptor'
+                    sh 'sudo docker run --name  perceptor -d -p 8085:80 perceptor'
 
-                    sh 'docker logout' 
+                    sh 'sudo docker logout' 
                 }
             }
         }
