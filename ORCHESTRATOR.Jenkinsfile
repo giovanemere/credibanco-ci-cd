@@ -43,20 +43,24 @@ pipeline {
             sh 'ls $WorkSpaceTrigger'
             sh 'git -C $WorkSpaceTrigger branch -r'
             sh 'git -C $WorkSpaceTrigger status'
-            
-            // Copiar archivos
-            def sshHost = getSSHHost('serverDocker')
-            def host = [host: sshHost.hostname, user: sshHost.username, password: sshHost.password]
-            sshHost = null
-            sh("""
-            set +x
-            sshpass -p "${host.password}" scp -o StrictHostKeyChecking=no ${host.user}@${host.host}:$WorkSpaceTrigger/perceptor/* ${remoteDirPath}/
-            set -x
-            """)
 
           }
          }
         }
+
+        stage ("Copy - Artifact"){
+            when { expression { "${env.disableCopy}" == '1' } }
+            options { skipDefaultCheckout(true) }
+            steps {
+                script { // Upload SSH Server
+                    sshPublisher(publishers: [
+                        sshPublisherDesc(configName: "${AgentLabel}", verbose: true, transfers: [
+                            sshTransfer( sourceFiles: "$WorkSpaceTrigger/perceptor/*", remoteDirectory: "${remoteDirPath}" )
+                        ])])
+                }
+            }
+        }
+
         stage ("Code Review"){
             when { expression { "${disableCodeReview}" == '1' } }
             options { skipDefaultCheckout(true) }
@@ -187,20 +191,4 @@ pipeline {
             }   
         }
     }
-}
-
-import jenkins.plugins.publish_over_ssh.*
-
-@NonCPS
-def getSSHHost(name) {
-  def found = null
-  Jenkins.instance.getDescriptorByType(BapSshPublisherPlugin.Descriptor.class).each{
-    it.hostConfigurations.each{host ->
-      if (host.name == name) {
-        found = host
-      }
-    }
-  }
-
-  found
 }
