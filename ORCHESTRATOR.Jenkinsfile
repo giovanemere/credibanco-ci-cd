@@ -154,8 +154,9 @@ pipeline {
                     // Subir Imagen 
                     //sh 'sudo docker push ${registry}:$BUILD_NUMBER'
                     docker.withRegistry('https://registry.hub.docker.com', 'credential') {            
-                    app.push("${env.BUILD_NUMBER}")            
-                    app.push("latest")
+                        app.push("${env.BUILD_NUMBER}")            
+                        app.push("latest")
+                    }
 
                     // Clean Image local
                     //sh "sudo docker rmi ${registry}:$BUILD_NUMBER" 
