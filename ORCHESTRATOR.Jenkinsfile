@@ -6,6 +6,8 @@ pipeline {
             SourceEncoding = "UTF-8"
             ServerFortify = "https://xxxx/ssc"
             ServerReportFortify = "${ServerFortify}/api/v1/projectVersions"
+            ProjectName = "Angular"
+            AppName = "Credibanco"
             
             // Clean
             cleanEnvironment = "1"
@@ -39,14 +41,17 @@ pipeline {
                                 script {       
                                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                         script {
-                                            def scannerHome = tool 'sonarqube';
+                                           def scannerHome = tool 'sonarqube';
+                    
                                             withSonarQubeEnv("sonarqube") {
                                                 sh ("""${tool("sonarqube")}/bin/sonar-scanner \
-                                                -Dsonar.projectKey=Angular \
-                                                -Dsonar.projectName=Angular \
+                                                -Dsonar.projectKey=${projectName}-${appName} \
+                                                -Dsonar.projectName=${projectName}-${appName} \
                                                 -Dsonar.projectBaseDir=${workSpaceTrigger} \
-                                                -Dsonar.sources=. -Dsonar.sourceEncoding=${sourceEncoding} -Dsonar.java.binaries=. \
-                                                -Dsonar.branch.name=develop -Dsonar.projectVersion=${BUILD_NUMBER} """)  
+                                                -Dsonar.sources=. \
+                                                -Dsonar.java.binaries=. \
+                                                -Dsonar.projectVersion=${BUILD_NUMBER}
+                                                """) 
                                             }
                                         }
                                     }
