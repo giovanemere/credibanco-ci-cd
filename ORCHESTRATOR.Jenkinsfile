@@ -168,8 +168,8 @@ pipeline {
                         //login repositorio
                         sh 'docker login -u ${dockerhubuser} -p ${dockerhubpwd}'
 
-                        // Subir Contenedor
-                        sh 'sudo docker run --name ${registry}:$BUILD_NUMBER -d -p 8085:80 perceptor'
+                        // Correr Contenedor
+                        sh 'sudo docker run --name edissonz8809/credibanco:latest -d -p 8085:80 perceptor'
                      }
                 }
             }
