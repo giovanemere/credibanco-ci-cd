@@ -137,6 +137,7 @@ pipeline {
             options { skipDefaultCheckout(true) }
             steps {          
                 script {
+                    def app 
 
                     //Descomprimir en Remoto
                     sh 'tar -xvf ${FileTar} && ls -ltr'
@@ -144,7 +145,8 @@ pipeline {
 
                     // Construye la imagen de Docker
                     //docker.build("${registry}:$BUILD_NUMBER", "-f Dockerfile .")
-                    sh 'sudo  docker build -t ${registry}:$BUILD_NUMBER .'     
+                    //sh 'sudo  docker build -t ${registry}:$BUILD_NUMBER .'     
+                    app = docker.build("${registry}:$BUILD_NUMBER")
 	                echo 'Build Image Completed'       
 
                     // Subir Imagen 
