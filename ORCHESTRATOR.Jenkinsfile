@@ -171,7 +171,7 @@ pipeline {
                         // Correr Contenedor
                         sh 'sudo docker stop credibanco'
                         sh 'sudo docker pull edissonz8809/credibanco:latest'
-                        sh 'sudo docker run --rm --name credibanco -d -p 8085:80 edissonz8809/credibanco:latest'
+                        sh 'sudo docker run -d --name credibanco -p 8085:80 edissonz8809/credibanco:latest'
                      }
                 }
             }
