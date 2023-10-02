@@ -46,6 +46,8 @@ pipeline {
             sh 'ls $WorkSpaceTrigger'
             sh 'git -C $WorkSpaceTrigger branch -r'
             sh 'git -C $WorkSpaceTrigger status'
+            env.FileTar="perceptor.tar"
+            sh 'tar -cvf ${FileTar} $WorkSpaceTrigger/perceptor'
 
           }
          }
@@ -58,7 +60,7 @@ pipeline {
                 script { // Upload SSH Server
                     sshPublisher(publishers: [
                         sshPublisherDesc(configName: "${AgentLabel}", verbose: true, transfers: [
-                            sshTransfer( sourceFiles: "$WorkSpaceTrigger/perceptor/*", remoteDirectory: "${remoteDirPath}" )
+                            sshTransfer( sourceFiles: "${FileTar}", remoteDirectory: "${remoteDirPath}" )
                         ])])
                 }
             }
