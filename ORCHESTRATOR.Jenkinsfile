@@ -154,6 +154,12 @@ pipeline {
                         app.push("${env.BUILD_NUMBER}")            
                         app.push("latest")
                     }
+
+                    //login repositorio
+                    withCredentials([usernamePassword(credentialsId: "credential", passwordVariable: 'dockerhubpwd', usernameVariable: 'dockerhubuser')]){ 
+                    sh 'docker login -u ${dockerhubuser} -p ${dockerhubpwd}'
+                     }
+
                     // Subir Contenedor
                     sh 'sudo docker run --name  perceptor -d -p 8085:80 perceptor'
                 }
