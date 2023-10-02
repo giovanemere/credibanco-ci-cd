@@ -128,15 +128,11 @@ pipeline {
             options { skipDefaultCheckout(true) }
             steps {          
                 script {
-                    
-                    
-                    
+                                        
                     // Construye la imagen de Docker
                     docker.build("${registry}:$BUILD_NUMBER", "-f Dockerfile .")
                     //sh 'docker build -t ${registry}:$BUILD_NUMBER .'     
 	                echo 'Build Image Completed'
-
-                   
 
                     //  Inicia sesión en Docker Hub
                     sh 'echo $registryCredential | docker login -u $registryCredential --password-stdin'               		
