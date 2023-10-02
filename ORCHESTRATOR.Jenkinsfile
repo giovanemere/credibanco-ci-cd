@@ -104,7 +104,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                    dir('${WorkSpaceTrigger}/perceptor/') {                
+                dir('$WorkSpaceTrigger/perceptor/') {                
                     script {
                         // login
                         sh 'echo $registryCredential | docker login -u $registryCredential --password-stdin'
