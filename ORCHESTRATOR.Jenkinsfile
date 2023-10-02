@@ -17,6 +17,12 @@ pipeline {
             disableCodeReview = "1"
             disableSonar = "1"
             disableFortify = "1"
+
+            // Define environment variables for Docker Hub credentials
+            registry = "edissonz8809/credibanco'" 
+            registryCredential = credentials('credential')
+            dockerImage = ''
+
             
     } 
     stages {
@@ -96,14 +102,23 @@ pipeline {
                 }
             }
         }
-        stage ('Deploy - Build Docker'){
-            stages {
-                stage ('Deploy - Buld Variables'){
-                 steps {
-                  script {
-                        echo "step pipeline CD"
-                  }
-                 }
+        stage('Build Docker Image') {
+            steps {
+                dir('${WorkSpaceTrigger}/perceptor/') {                
+                script {
+                    // login
+                    sh 'echo $registryCredential | docker login -u $registryCredential --password-stdin'
+                    
+                    // Construye la imagen de Docker
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER", "-f Dockerfile ."
+
+                    // Inicia sesión en Docker Hub
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+
+                    // Clean Image local
+                    sh "docker rmi $registry:$BUILD_NUMBER" 
                 }
             }
         }
@@ -112,7 +127,7 @@ pipeline {
     post {
         failure {
             script {
-                
+                 echo "La construcción o la carga de la imagen de Docker ha fallado."
                 // Limpieza Ambiente
                     if ( "${cleanEnvironment}" == "1")  {
                         deleteDir()
@@ -123,6 +138,8 @@ pipeline {
         }
         success {
             script {
+
+                echo "La imagen de Docker se ha construido y subido a Docker Hub con éxito."
                 // Limpieza Ambiente
                  if ( "${cleanEnvironment}" == "1")  {               
                         deleteDir()
