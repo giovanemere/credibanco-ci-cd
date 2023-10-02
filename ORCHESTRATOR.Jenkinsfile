@@ -14,19 +14,16 @@ pipeline {
             disableCodeReview = "1"
             disableSonar = "1"
             disableFortify = "1"
-
             
     } 
     stages {
         stage ('Variables - Master'){
          steps {
           script {
-            echo "clon aplicacion: $WorkSpaceTrigger"
+            echo "clone aplicacion: $WorkSpaceTrigger"
             sh 'ls $WorkSpaceTrigger'
             sh 'git -C $WorkSpaceTrigger branch -r'
             sh 'git -C $WorkSpaceTrigger status'
-            // Worspace
-            // Variables Proyectos
           }
          }
         }
@@ -102,36 +99,19 @@ pipeline {
                  }
                 }
             }
-            post {
-                failure {
-                    script {
-                        deleteDir()
-                }
-                success {
-                    script {
-                        deleteDir()
-                    }   
-                }
-                aborted {
-                    script {
-                        deleteDir()
-                    }   
-                }
-            }
         }
+     
     }
     post {
         failure {
-            withCredentials([usernamePassword(credentialsId: "${FindUserBitbucket}", passwordVariable: 'tmppasswordGit', usernameVariable: 'tmpUserBitbucket')]){
-                script {
-                    
-                    // Limpieza Ambiente
-                     if ( "${cleanEnvironment}" == "1")  {
-                            deleteDir()
-                            dir("${WorkSpaceMPipeline}") { deleteDir() }    // Limpieza WorkSpace Pipeline
-                            dir("${WorkSpaceTrigger}") { deleteDir() }      // Limpieza WorkSpace Trigger
-                        } else { echo "Eliminar Carpetas desactivado" }     // Desactivado
-                }
+            script {
+                
+                // Limpieza Ambiente
+                    if ( "${cleanEnvironment}" == "1")  {
+                        deleteDir()
+                        dir("${WorkSpaceMPipeline}") { deleteDir() }    // Limpieza WorkSpace Pipeline
+                        dir("${WorkSpaceTrigger}") { deleteDir() }      // Limpieza WorkSpace Trigger
+                    } else { echo "Eliminar Carpetas desactivado" }     // Desactivado
             }
         }
         success {
@@ -145,16 +125,14 @@ pipeline {
             }   
         }
         aborted {
-            withCredentials([usernamePassword(credentialsId: "${FindUserBitbucket}", passwordVariable: 'tmppasswordGit', usernameVariable: 'tmpUserBitbucket')]){
-                script {
-                    // Limpieza Ambiente
-                     if ( "${cleanEnvironment}" == "1")  {               
-                            deleteDir()
-                            dir("${WorkSpaceMPipeline}") { deleteDir() }    // Limpieza WorkSpace Pipeline
-                            dir("${WorkSpaceTrigger}") { deleteDir() }      // Limpieza WorkSpace Trigger
-                        } else { echo "Eliminar Carpetas desactivado" }     // Desactivado
-                }   
-            }
+            script {
+                // Limpieza Ambiente
+                    if ( "${cleanEnvironment}" == "1")  {               
+                        deleteDir()
+                        dir("${WorkSpaceMPipeline}") { deleteDir() }    // Limpieza WorkSpace Pipeline
+                        dir("${WorkSpaceTrigger}") { deleteDir() }      // Limpieza WorkSpace Trigger
+                    } else { echo "Eliminar Carpetas desactivado" }     // Desactivado
+            }   
         }
     }
 }
