@@ -162,14 +162,15 @@ pipeline {
             options { skipDefaultCheckout(true) }
             steps {          
                 script {
-
-                    //login repositorio
+                    // Credenciales
                     withCredentials([usernamePassword(credentialsId: "credential", passwordVariable: 'dockerhubpwd', usernameVariable: 'dockerhubuser')]){ 
-                    sh 'docker login -u ${dockerhubuser} -p ${dockerhubpwd}'
-                     }
+                    
+                        //login repositorio
+                        sh 'docker login -u ${dockerhubuser} -p ${dockerhubpwd}'
 
-                    // Subir Contenedor
-                    sh 'sudo docker run --name ${registry}:$BUILD_NUMBER -d -p 8085:80 perceptor'
+                        // Subir Contenedor
+                        sh 'sudo docker run --name ${registry}:$BUILD_NUMBER -d -p 8085:80 perceptor'
+                     }
                 }
             }
         }
