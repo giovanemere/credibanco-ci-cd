@@ -106,7 +106,7 @@ pipeline {
             steps {          
                 script {
                     
-                    sh 'cp -r $WorkSpaceTrigger/perceptor/ . && ls -ltr '
+                    sh 'cp -r $WorkSpaceTrigger/perceptor/* . && ls -ltr '
                     
                     // Construye la imagen de Docker
                     //dockerImage = docker.build registry + ":$BUILD_NUMBER" 
