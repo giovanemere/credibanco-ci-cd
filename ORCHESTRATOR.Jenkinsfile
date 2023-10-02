@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'Built-In Node' }
+    agent { label 'principal' }
     environment {
             WorkSpaceMPipeline = "$WORKSPACE"
             ServerSonar = "http://10.236.19.217:9000/sonarqube/dashboard?branch=release&id="
