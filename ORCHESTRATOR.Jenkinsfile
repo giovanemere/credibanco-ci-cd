@@ -137,7 +137,10 @@ pipeline {
             options { skipDefaultCheckout(true) }
             steps {          
                 script {
-                                        
+
+                    //Descomprimir en Remoto
+                    sh 'tar -xvf ${FileTar}'
+
                     // Construye la imagen de Docker
                     docker.build("${registry}:$BUILD_NUMBER", "-f Dockerfile .")
                     //sh 'docker build -t ${registry}:$BUILD_NUMBER .'     
