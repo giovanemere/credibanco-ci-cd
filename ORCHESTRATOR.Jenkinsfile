@@ -20,7 +20,7 @@ pipeline {
             disableFortify = "1"
 
             //SSH Copy
-            disableCopy = "11"
+            disableCopy = "0"
 
             // Define environment variables for Docker Hub credentials
             registry = "edissonz8809/credibanco" 
