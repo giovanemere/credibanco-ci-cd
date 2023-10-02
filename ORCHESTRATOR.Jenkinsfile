@@ -104,21 +104,22 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                dir('${WorkSpaceTrigger}/perceptor/') {                
-                script {
-                    // login
-                    sh 'echo $registryCredential | docker login -u $registryCredential --password-stdin'
-                    
-                    // Construye la imagen de Docker
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER", "-f Dockerfile ."
+                    dir('${WorkSpaceTrigger}/perceptor/') {                
+                    script {
+                        // login
+                        sh 'echo $registryCredential | docker login -u $registryCredential --password-stdin'
+                        
+                        // Construye la imagen de Docker
+                        dockerImage = docker.build registry + ":$BUILD_NUMBER", "-f Dockerfile ."
 
-                    // Inicia sesión en Docker Hub
-                    docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push()
+                        // Inicia sesión en Docker Hub
+                        docker.withRegistry( '', registryCredential ) {
+                            dockerImage.push()
+                        }
+
+                        // Clean Image local
+                        sh "docker rmi $registry:$BUILD_NUMBER" 
                     }
-
-                    // Clean Image local
-                    sh "docker rmi $registry:$BUILD_NUMBER" 
                 }
             }
         }
