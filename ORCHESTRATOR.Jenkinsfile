@@ -2,7 +2,7 @@ pipeline {
     agent { label 'principal' }
     environment {
             WorkSpaceMPipeline = "$WORKSPACE"
-            ServerSonar = "http://10.236.19.217:9000/sonarqube/dashboard?branch=release&id="
+            ServerSonar = "http://172.178.98.221:9000/sonarqube/dashboard?branch=main&id="
             SourceEncoding = "UTF-8"
             ServerFortify = "https://xxxx/ssc"
             ServerReportFortify = "${ServerFortify}/api/v1/projectVersions"
@@ -41,17 +41,15 @@ pipeline {
                                 script {       
                                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                         script {
-                                           def scannerHome = tool 'sonarqube';
-                    
+                                            env.VersionSonarQube = "${ProjectName}-${AppName}"
+                                            def scannerHome = tool 'sonarqube';
                                             withSonarQubeEnv("sonarqube") {
                                                 sh ("""${tool("sonarqube")}/bin/sonar-scanner \
-                                                -Dsonar.projectKey=${projectName} \
-                                                -Dsonar.projectName=${projectName} \
+                                                -Dsonar.projectKey=${VersionSonarQube} \
+                                                -Dsonar.projectName=${VersionSonarQube} \
                                                 -Dsonar.projectBaseDir=${workSpaceTrigger} \
-                                                -Dsonar.sources=. \
-                                                -Dsonar.java.binaries=. \
-                                                -Dsonar.projectVersion=${BUILD_NUMBER}
-                                                """) 
+                                                -Dsonar.sources=. -Dsonar.sourceEncoding=${sourceEncoding} -Dsonar.java.binaries=. \
+                                                -Dsonar.branch.name=${BranchName} -Dsonar.projectVersion=${BUILD_NUMBER} """)  
                                             }
                                         }
                                     }
