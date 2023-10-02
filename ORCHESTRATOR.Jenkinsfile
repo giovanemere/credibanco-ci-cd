@@ -19,9 +19,6 @@ pipeline {
             disableSonar = "1"
             disableFortify = "1"
 
-            //SSH Copy
-            disableCopy = "0"
-
             // Define environment variables for Docker Hub credentials
             registry = "edissonz8809/credibanco" 
             registryCredential = credentials('credential')
@@ -52,8 +49,6 @@ pipeline {
         }
 
         stage ("Copy - Artifact"){
-            when { expression { "${env.disableCopy}" == '1' } }
-            options { skipDefaultCheckout(true) }
             steps {
                 script { // Upload SSH Server
                     sshPublisher(publishers: [
