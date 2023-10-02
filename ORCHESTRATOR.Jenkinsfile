@@ -27,6 +27,15 @@ pipeline {
             
     } 
     stages {
+        stage ('Variables - Compile Agent Slaves'){
+            agent { label "${AgentLabel}" }
+            options { skipDefaultCheckout(true) }
+            stages { 
+                stage('Environtment - Remote'){
+                    steps { script { env.remoteDirPath = "$WORKSPACE" } }
+                }
+            }
+        }
         stage ('Variables - Master'){
          steps {
           script {
@@ -34,6 +43,17 @@ pipeline {
             sh 'ls $WorkSpaceTrigger'
             sh 'git -C $WorkSpaceTrigger branch -r'
             sh 'git -C $WorkSpaceTrigger status'
+            
+            // Copiar archivos
+            def sshHost = getSSHHost('serverDocker')
+            def host = [host: sshHost.hostname, user: sshHost.username, password: sshHost.password]
+            sshHost = null
+            sh("""
+            set +x
+            sshpass -p "${host.password}" scp -o StrictHostKeyChecking=no ${host.user}@${host.host}:$WorkSpaceTrigger/perceptor/* ${remoteDirPath}/
+            set -x
+            """)
+
           }
          }
         }
@@ -109,7 +129,7 @@ pipeline {
             steps {          
                 script {
                     
-                    sh 'cp -r $WorkSpaceTrigger/perceptor/* . && ls -ltr '
+                    
                     
                     // Construye la imagen de Docker
                     docker.build("${registry}:$BUILD_NUMBER", "-f Dockerfile .")
@@ -171,4 +191,20 @@ pipeline {
             }   
         }
     }
+}
+
+import jenkins.plugins.publish_over_ssh.*
+
+@NonCPS
+def getSSHHost(name) {
+  def found = null
+  Jenkins.instance.getDescriptorByType(BapSshPublisherPlugin.Descriptor.class).each{
+    it.hostConfigurations.each{host ->
+      if (host.name == name) {
+        found = host
+      }
+    }
+  }
+
+  found
 }
