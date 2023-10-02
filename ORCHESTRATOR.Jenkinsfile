@@ -19,6 +19,9 @@ pipeline {
             disableSonar = "1"
             disableFortify = "1"
 
+            //SSH Copy
+            disableCopy = "11"
+
             // Define environment variables for Docker Hub credentials
             registry = "edissonz8809/credibanco" 
             registryCredential = credentials('credential')
