@@ -23,9 +23,7 @@ pipeline {
             disableCopy = "1"
 
             // Define environment variables for Docker Hub credentials
-            registry = "edissonz8809/credibanco" 
-            registryCredential = credentials('credential')
-            dockerImage = ''
+            registry = "edissonz8809/credibanco"
 
             
     } 
@@ -155,7 +153,7 @@ pipeline {
 
                     // Subir Imagen 
                     //sh 'sudo docker push ${registry}:$BUILD_NUMBER'
-                    docker.withRegistry('https://registry.hub.docker.com', 'git') {            
+                    docker.withRegistry('https://registry.hub.docker.com', 'credential') {            
                     app.push("${env.BUILD_NUMBER}")            
                     app.push("latest")
 
