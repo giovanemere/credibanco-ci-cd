@@ -161,7 +161,7 @@ pipeline {
                      }
 
                     // Subir Contenedor
-                    sh 'sudo docker run --name  perceptor -d -p 8085:80 perceptor'
+                    sh 'sudo docker run --name ${registry}:$BUILD_NUMBER -d -p 8085:80 perceptor'
                 }
             }
         }
