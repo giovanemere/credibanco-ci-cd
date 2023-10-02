@@ -145,11 +145,7 @@ pipeline {
                     // Construye la imagen de Docker
                     //docker.build("${registry}:$BUILD_NUMBER", "-f Dockerfile .")
                     sh 'sudo  docker build -t ${registry}:$BUILD_NUMBER .'     
-	                echo 'Build Image Completed'
-
-                    //  Inicia sesión en Docker Hub
-                    sh 'echo $registryCredential | docker login -u $registryCredential --password-stdin'               		
-	                echo 'Login Completed'                     
+	                echo 'Build Image Completed'       
 
                     // Subir Imagen 
                     sh 'sudo docker push ${registry}:$BUILD_NUMBER'
