@@ -109,25 +109,22 @@ pipeline {
                     sh 'cp -r $WorkSpaceTrigger/perceptor/* . && ls -ltr '
                     
                     // Construye la imagen de Docker
-                    //dockerImage = docker.build registry + ":$BUILD_NUMBER" 
-                    sh 'docker build -t ${registry}:$BUILD_NUMBER .'     
+                    docker.build("${registry}:$BUILD_NUMBER", "-f Dockerfile .")
+                    //sh 'docker build -t ${registry}:$BUILD_NUMBER .'     
 	                echo 'Build Image Completed'
 
                    
 
-                    // login
+                    //  Inicia sesión en Docker Hub
                     sh 'echo $registryCredential | docker login -u $registryCredential --password-stdin'               		
-	                echo 'Login Completed'  
+	                echo 'Login Completed'                     
 
-
-                     // Inicia sesión en Docker Hub
-                     sh 'docker push ${registry}:$BUILD_NUMBER'
-                     //docker.withRegistry( '', registryCredential ) {
-                     //   dockerImage.push()
-                     //}
+                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+                    // Sube la imagen a Docker Hub
+                    docker.image("${registry}:$BUILD_NUMBER").push()
 
                     // Clean Image local
-                    sh "docker rmi $registry:$BUILD_NUMBER" 
+                    sh "docker rmi ${registry}:$BUILD_NUMBER" 
 
                     sh 'docker logout' 
                 }
