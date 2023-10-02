@@ -147,8 +147,6 @@ pipeline {
                     sh 'sudo  docker build -t ${registry}:$BUILD_NUMBER .'     
 	                echo 'Build Image Completed'
 
-                    sh 'sudo docker docker image ls | grep ${registry}:$BUILD_NUMBER'  
-
                     //  Inicia sesión en Docker Hub
                     sh 'echo $registryCredential | docker login -u $registryCredential --password-stdin'               		
 	                echo 'Login Completed'                     
