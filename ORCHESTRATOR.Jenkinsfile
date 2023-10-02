@@ -110,7 +110,7 @@ pipeline {
                         sh 'echo $registryCredential | docker login -u $registryCredential --password-stdin'
                         
                         // Construye la imagen de Docker
-                        dockerImage = docker.build registry + ":$BUILD_NUMBER", "-f Dockerfile ."
+                        dockerImage = docker.build registry + ":$BUILD_NUMBER"
 
                         // Inicia sesión en Docker Hub
                         docker.withRegistry( '', registryCredential ) {
