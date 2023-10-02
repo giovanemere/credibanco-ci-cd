@@ -139,7 +139,7 @@ pipeline {
                 script {
 
                     //Descomprimir en Remoto
-                    sh 'tar -xvf ${FileTar}'
+                    sh 'tar -xvf ${FileTar} && ls -ltr'
 
                     // Construye la imagen de Docker
                     docker.build("${registry}:$BUILD_NUMBER", "-f Dockerfile .")
@@ -157,6 +157,9 @@ pipeline {
 
                     // Clean Image local
                     sh "docker rmi ${registry}:$BUILD_NUMBER" 
+
+                    // Subir Contenedor
+                    docker run --name  perceptor -d -p 8080:80 perceptor
 
                     sh 'docker logout' 
                 }
