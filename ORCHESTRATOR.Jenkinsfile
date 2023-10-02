@@ -120,8 +120,9 @@ pipeline {
 	                echo 'Login Completed'                     
 
                     docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
-                    // Sube la imagen a Docker Hub
-                    docker.image("${registry}:$BUILD_NUMBER").push()
+                        // Sube la imagen a Docker Hub
+                        docker.image("${registry}:$BUILD_NUMBER").push()
+                    }
 
                     // Clean Image local
                     sh "docker rmi ${registry}:$BUILD_NUMBER" 
