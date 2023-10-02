@@ -106,7 +106,7 @@ pipeline {
             steps {          
                 script {
                     
-                    sh 'cp -r $WorkSpaceTrigger/perceptor/ .'
+                    sh 'cp -r $WorkSpaceTrigger/perceptor/ . && ls -ltr '
                     
                     // login
                     sh 'echo $registryCredential | docker login -u $registryCredential --password-stdin'
