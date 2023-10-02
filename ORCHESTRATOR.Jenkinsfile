@@ -159,7 +159,7 @@ pipeline {
                     sh "docker rmi ${registry}:$BUILD_NUMBER" 
 
                     // Subir Contenedor
-                    docker run --name  perceptor -d -p 8080:80 perceptor
+                    docker run --name  perceptor -d -p 8085:80 perceptor
 
                     sh 'docker logout' 
                 }
