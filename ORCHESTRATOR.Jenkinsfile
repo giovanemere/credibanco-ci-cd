@@ -9,6 +9,7 @@ pipeline {
             ProjectName = "Angular"
             AppName = "Credibanco"
             BranchName = "main"
+            AgentLabel = "Docker"
             
             // Clean
             cleanEnvironment = "1"
@@ -103,6 +104,8 @@ pipeline {
             }
         }
         stage('Build Docker Image') {
+            agent { label "${AgentLabel}" }
+            options { skipDefaultCheckout(true) }
             steps {          
                 script {
                     
