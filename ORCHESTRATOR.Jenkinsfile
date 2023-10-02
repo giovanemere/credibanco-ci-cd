@@ -48,7 +48,7 @@ pipeline {
                                                 -Dsonar.projectKey=${VersionSonarQube} \
                                                 -Dsonar.projectName=${VersionSonarQube} \
                                                 -Dsonar.projectBaseDir=${workSpaceTrigger} \
-                                                -Dsonar.sources=. -Dsonar.sourceEncoding=${sourceEncoding} \
+                                                -Dsonar.sources=. -Dsonar.sourceEncoding=${SourceEncoding} \
                                                 -Dsonar.java.binaries=. \
                                                 -Dsonar.exclusions=com/company/packageA/generated/**/*.java,com/company/packageB/generated/**/*.java
                                                 -Dsonar.branch.name=${BranchName} -Dsonar.projectVersion=${BUILD_NUMBER} """)  
