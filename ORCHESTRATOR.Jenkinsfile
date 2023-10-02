@@ -8,6 +8,7 @@ pipeline {
             ServerReportFortify = "${ServerFortify}/api/v1/projectVersions"
             ProjectName = "Angular"
             AppName = "Credibanco"
+            BranchName = "main"
             
             // Clean
             cleanEnvironment = "1"
