@@ -39,7 +39,6 @@ pipeline {
                                 script {       
                                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                         script {
-                                            env.VersionSonarQube = "build-${projectName}-${appName}"
                                             def scannerHome = tool 'sonarqube';
                                             withSonarQubeEnv("sonarqube") {
                                                 sh ("""${tool("sonarqube")}/bin/sonar-scanner \
