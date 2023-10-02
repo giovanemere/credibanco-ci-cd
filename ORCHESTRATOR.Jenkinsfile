@@ -140,6 +140,7 @@ pipeline {
 
                     //Descomprimir en Remoto
                     sh 'tar -xvf ${FileTar} && ls -ltr'
+                    sh 'cp -r /home/giovanemere/openjdk/remote/workspace/ORCHESTATOR/var/jenkins_home/workspace/WEBHOOK/perceptor/* .'
 
                     // Construye la imagen de Docker
                     docker.build("${registry}:$BUILD_NUMBER", "-f Dockerfile .")
