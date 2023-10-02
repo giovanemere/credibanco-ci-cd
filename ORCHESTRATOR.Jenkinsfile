@@ -138,12 +138,10 @@ pipeline {
                     def app 
 
                     //Descomprimir en Remoto
-                    sh 'tar -xvf ${FileTar} && ls -ltr'
+                    sh 'tar -xvf ${FileTar}'
                     sh 'cp -r /home/giovanemere/openjdk/remote/workspace/ORCHESTATOR/var/jenkins_home/workspace/WEBHOOK/perceptor/* .'
 
                     // Construye la imagen de Docker
-                    //docker.build("${registry}:$BUILD_NUMBER", "-f Dockerfile .")
-                    //sh 'sudo  docker build -t ${registry}:$BUILD_NUMBER .'     
                     app = docker.build("${registry}:$BUILD_NUMBER")
 	                echo 'Build Image Completed'
 
@@ -152,19 +150,12 @@ pipeline {
                     }   
 
                     // Subir Imagen 
-                    //sh 'sudo docker push ${registry}:$BUILD_NUMBER'
                     docker.withRegistry('https://registry.hub.docker.com', 'credential') {            
                         app.push("${env.BUILD_NUMBER}")            
                         app.push("latest")
                     }
-
-                    // Clean Image local
-                    //sh "sudo docker rmi ${registry}:$BUILD_NUMBER" 
-
                     // Subir Contenedor
                     sh 'sudo docker run --name  perceptor -d -p 8085:80 perceptor'
-
-                    //sh 'sudo docker logout' 
                 }
             }
         }
