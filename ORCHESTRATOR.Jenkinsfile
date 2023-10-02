@@ -169,7 +169,9 @@ pipeline {
                         sh 'docker login -u ${dockerhubuser} -p ${dockerhubpwd}'
 
                         // Correr Contenedor
-                        sh 'sudo docker run --name credibanco -d -p 8085:80 edissonz8809/credibanco:latest'
+                        sh 'sudo docker stop credibanco'
+                        sh 'sudo docker pull edissonz8809/credibanco:latest'
+                        sh 'sudo docker run --rm --name credibanco -d -p 8085:80 edissonz8809/credibanco:latest'
                      }
                 }
             }
