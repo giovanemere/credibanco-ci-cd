@@ -19,7 +19,7 @@ pipeline {
             disableFortify = "1"
 
             // Define environment variables for Docker Hub credentials
-            registry = "edissonz8809/credibanco'" 
+            registry = "edissonz8809/credibanco" 
             registryCredential = credentials('credential')
             dockerImage = ''
 
