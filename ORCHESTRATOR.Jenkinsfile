@@ -143,18 +143,19 @@ pipeline {
                     sh 'cp -r /home/giovanemere/openjdk/remote/workspace/ORCHESTATOR/var/jenkins_home/workspace/WEBHOOK/perceptor/* .'
 
                     // Construye la imagen de Docker
-                    docker.build("${registry}:$BUILD_NUMBER", "-f Dockerfile .")
-                    //sh 'docker build -t ${registry}:$BUILD_NUMBER .'     
+                    //docker.build("${registry}:$BUILD_NUMBER", "-f Dockerfile .")
+                    sh 'docker build -t ${registry}:$BUILD_NUMBER .'     
 	                echo 'Build Image Completed'
+
+                    sh 'docker docker image ls | grep ${registry}:$BUILD_NUMBER'  
+
 
                     //  Inicia sesión en Docker Hub
                     sh 'echo $registryCredential | docker login -u $registryCredential --password-stdin'               		
 	                echo 'Login Completed'                     
 
-                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
-                        // Sube la imagen a Docker Hub
-                        docker.image("${registry}:$BUILD_NUMBER").push()
-                    }
+                    // Subir Imagen 
+                    sh 'docker push ${registry}:$BUILD_NUMBER'
 
                     // Clean Image local
                     sh "docker rmi ${registry}:$BUILD_NUMBER" 
