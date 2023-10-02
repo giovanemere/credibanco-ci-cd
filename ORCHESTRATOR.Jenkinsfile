@@ -21,6 +21,10 @@ pipeline {
         stage ('Variables - Master'){
          steps {
           script {
+            echo "clon aplicacion: $WorkSpaceTrigger"
+            sh 'ls $WorkSpaceTrigger'
+            sh 'git -C $WorkSpaceTrigger branch -r'
+            sh 'git -C $WorkSpaceTrigger status'
             // Worspace
             // Variables Proyectos
           }
@@ -42,11 +46,11 @@ pipeline {
                                             def scannerHome = tool 'sonarqube';
                                             withSonarQubeEnv("sonarqube") {
                                                 sh ("""${tool("sonarqube")}/bin/sonar-scanner \
-                                                -Dsonar.projectKey=${VersionSonarQube} \
-                                                -Dsonar.projectName=${VersionSonarQube} \
+                                                -Dsonar.projectKey=Angular \
+                                                -Dsonar.projectName=Angular \
                                                 -Dsonar.projectBaseDir=${workSpaceTrigger} \
                                                 -Dsonar.sources=. -Dsonar.sourceEncoding=${sourceEncoding} -Dsonar.java.binaries=. \
-                                                -Dsonar.branch.name=${BranchName} -Dsonar.projectVersion=${BUILD_NUMBER} """)  
+                                                -Dsonar.branch.name=develop -Dsonar.projectVersion=${BUILD_NUMBER} """)  
                                             }
                                         }
                                     }
