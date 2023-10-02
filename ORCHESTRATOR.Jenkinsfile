@@ -42,8 +42,8 @@ pipeline {
                                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                         script {
                                             env.VersionSonarQube = "${ProjectName}-${AppName}"
-                                            def scannerHome = tool name: 'sonarqube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                                            withSonarQubeEnv('sonarqube') {
+                                            def scannerHome = tool  'sonarqube';
+                                            withSonarQubeEnv("sonarqube") {
                                                 sh ("""${tool("sonarqube")}/bin/sonar-scanner \
                                                 -Dsonar.projectKey=${VersionSonarQube} \
                                                 -Dsonar.projectName=${VersionSonarQube} \
