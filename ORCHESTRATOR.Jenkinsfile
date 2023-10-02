@@ -9,7 +9,7 @@ pipeline {
             ProjectName = "Angular"
             AppName = "Credibanco"
             BranchName = "main"
-            AgentLabel = "Docker"
+            AgentLabel = "serverDocker"
             
             // Clean
             cleanEnvironment = "1"
