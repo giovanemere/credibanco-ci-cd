@@ -162,7 +162,7 @@ pipeline {
                     //sh "sudo docker rmi ${registry}:$BUILD_NUMBER" 
 
                     // Subir Contenedor
-                    //sh 'sudo docker run --name  perceptor -d -p 8085:80 perceptor'
+                    sh 'sudo docker run --name  perceptor -d -p 8085:80 perceptor'
 
                     //sh 'sudo docker logout' 
                 }
